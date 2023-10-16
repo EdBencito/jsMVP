@@ -1,10 +1,7 @@
 package com.jsmvp.microservices.jobSearchservice.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.jsmvp.microservices.jobSearchservice.Job;
-import com.jsmvp.microservices.jobSearchservice.JobSearchResults;
+import com.jsmvp.microservices.jobSearchservice.dto.Job;
+import com.jsmvp.microservices.jobSearchservice.dto.JobSearchResults;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -21,80 +18,9 @@ public class jobSearchController {
 
     StringBuilder kurl = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=software engineer");
 
-
     @GetMapping("/t0")
     public void t0() {
         System.out.println("hello world");
-    }
-
-    @GetMapping("/t1")
-    public void getJobSearchResultsViaKeywords() {
-        RestTemplate restTemplate = new RestTemplate();
-//        String result = restTemplate.getForObject(kurl+ keywords.trim(), String.class);
-
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.setBasicAuth(AUTH, "");
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-
-        ResponseEntity<Job> result = restTemplate.exchange(kurl.toString(), HttpMethod.GET, entity, Job.class);
-
-        Job job = result.getBody();
-        int statusCode = result.getStatusCodeValue();
-
-        System.out.println("end");
-        System.out.println(result);
-        System.out.println("");
-    }
-
-    @GetMapping("/t2")
-    public void getJobSearchResultsViaKeywords2() {
-        RestTemplate restTemplate = new RestTemplate();
-//        String result = restTemplate.getForObject(kurl+ keywords.trim(), String.class);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(AUTH, "");
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-
-        ResponseEntity<Job> result = restTemplate.exchange(kurl.toString(), HttpMethod.GET, entity, Job.class);
-        Job job = result.getBody();
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            String jres = objectMapper.writeValueAsString(job);
-            System.out.println("Jres: " + jres);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    @GetMapping("/t3")
-    public void getJobSearchResultsViaKeywords3() {
-        RestTemplate restTemplate = new RestTemplate();
-//        String result = restTemplate.getForObject(kurl+ keywords.trim(), String.class);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(AUTH, "");
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-
-        ResponseEntity<Job> result = restTemplate.exchange(kurl.toString(), HttpMethod.GET, entity, Job.class);
-        Job job = result.getBody();
-
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
-        try {
-            String jres = objectMapper.writeValueAsString(result);
-            System.out.println(jres);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     @GetMapping("/t4") // deserialises the list of jobs from the array of results
@@ -110,7 +36,7 @@ public class jobSearchController {
         ResponseEntity<JobSearchResults> result = restTemplate.exchange(kurl.toString(), HttpMethod.GET, entity, JobSearchResults.class);
         JobSearchResults jobSearchResults = result.getBody();
 
-        List<Job> jobs = jobSearchResults.getResults();
+        List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
 
         for (Job job : jobs) {
             System.out.println("Job ID: " + job.getJobId());
@@ -125,24 +51,25 @@ public class jobSearchController {
             System.out.println("Applications: " + job.getApplications());
             System.out.println("Job URL: " + job.getJobUrl());
             System.out.println(); // Add a newline for separation
+            System.out.println("***SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
+
         }
     }
 
     @GetMapping("/t5") // returns jobs json objects like the REED API
     public List<Job> getJobSearchResultsViaKeywords5() {
         RestTemplate restTemplate = new RestTemplate();
-//        String result = restTemplate.getForObject(kurl+ keywords.trim(), String.class);
-
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(AUTH, "");
         HttpEntity<String> entity = new HttpEntity<>(headers);
-
 
         ResponseEntity<JobSearchResults> result = restTemplate.exchange(kurl.toString(), HttpMethod.GET, entity, JobSearchResults.class);
         JobSearchResults jobSearchResults = result.getBody();
 
         List<Job> jobs = jobSearchResults.getResults();
 
+        System.out.println("***SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
         return jobs;
+
     }
 }

@@ -1,4 +1,4 @@
-package com.jsmvp.microservices.jobSearchservice;
+package com.jsmvp.microservices.jobSearchservice.dto;
 
 import java.util.List;
 
