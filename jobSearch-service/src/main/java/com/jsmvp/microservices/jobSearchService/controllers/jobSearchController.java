@@ -1,7 +1,7 @@
-package com.jsmvp.microservices.jobSearchservice.controllers;
+package com.jsmvp.microservices.jobSearchService.controllers;
 
-import com.jsmvp.microservices.jobSearchservice.dto.Job;
-import com.jsmvp.microservices.jobSearchservice.dto.JobSearchResults;
+import com.jsmvp.microservices.jobSearchService.dtos.Job;
+import com.jsmvp.microservices.jobSearchService.dtos.JobSearchResults;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,19 +14,25 @@ import java.util.List;
 
 @RestController
 public class jobSearchController {
+//    private final InputReaderService inputReaderService; // TODO: setup for  injecting inputreaderserivce to be used in this controller
+//    @Autowired
+//    public jobSearchController(InputReaderService inputReaderService){
+//        this.inputReaderService = inputReaderService;
+//    }
+
+
     String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";
 
     StringBuilder kurl = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=software engineer");
 
     @GetMapping("/t0")
     public void t0() {
-        System.out.println("hello world");
+        System.out.println("***TESTING TESTING 123***");
     }
 
-    @GetMapping("/t4") // deserialises the list of jobs from the array of results
+    @GetMapping("/t4") // deserializes the list of jobs from the array of results
     public void getJobSearchResultsViaKeywords4() {
         RestTemplate restTemplate = new RestTemplate();
-//        String result = restTemplate.getForObject(kurl+ keywords.trim(), String.class);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(AUTH, "");
@@ -51,7 +57,7 @@ public class jobSearchController {
             System.out.println("Applications: " + job.getApplications());
             System.out.println("Job URL: " + job.getJobUrl());
             System.out.println(); // Add a newline for separation
-            System.out.println("***SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
+            System.out.println("***T4 SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
 
         }
     }
@@ -66,9 +72,9 @@ public class jobSearchController {
         ResponseEntity<JobSearchResults> result = restTemplate.exchange(kurl.toString(), HttpMethod.GET, entity, JobSearchResults.class);
         JobSearchResults jobSearchResults = result.getBody();
 
-        List<Job> jobs = jobSearchResults.getResults();
+        List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
 
-        System.out.println("***SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
+        System.out.println("***T5 SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
         return jobs;
 
     }

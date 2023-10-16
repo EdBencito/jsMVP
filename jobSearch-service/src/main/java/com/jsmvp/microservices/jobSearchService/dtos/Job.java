@@ -1,4 +1,4 @@
-package com.jsmvp.microservices.jobSearchservice.dto;
+package com.jsmvp.microservices.jobSearchService.dtos;
 
 
 public class Job {

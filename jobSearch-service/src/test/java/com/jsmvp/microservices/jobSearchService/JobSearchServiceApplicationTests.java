@@ -1,4 +1,4 @@
-package com.jsmvp.microservices.jobSearchservice;
+package com.jsmvp.microservices.jobSearchService;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
