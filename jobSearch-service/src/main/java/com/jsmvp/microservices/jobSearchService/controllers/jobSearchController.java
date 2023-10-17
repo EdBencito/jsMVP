@@ -14,11 +14,6 @@ import java.util.List;
 
 @RestController
 public class jobSearchController {
-//    private final InputReaderService inputReaderService; // TODO: setup for  injecting inputreaderserivce to be used in this controller
-//    @Autowired
-//    public jobSearchController(InputReaderService inputReaderService){
-//        this.inputReaderService = inputReaderService;
-//    }
 
 
     String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";

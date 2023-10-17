@@ -2,19 +2,16 @@ package com.jsmvp.microservices.inputReaderService.utils;
 
 import com.jsmvp.microservices.inputReaderService.services.InputReaderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.Scanner;
 
 @Component
 public class ConsoleReader {
-    private final TaskExecutor taskExecutor;
     private final InputReaderService inputReaderService;
 
     @Autowired
-    public ConsoleReader(TaskExecutor taskExecutor, InputReaderService inputReaderService) {
-        this.taskExecutor = taskExecutor;
+    public ConsoleReader(InputReaderService inputReaderService) {
         this.inputReaderService = inputReaderService;
     }
 
@@ -24,16 +21,14 @@ public class ConsoleReader {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Search: ");
                 String input = scanner.nextLine();
-
-
+                System.out.println("Input Received in ConsoleReader: " + input);
+                System.out.println("***Sent to InputReaderService***");
 //                TODO PROCESS THE INPUT
-                inputReaderService.processInput();
+                inputReaderService.processInput(input);
 
             } catch (Exception e) {
-                System.err.println("ERRRR" + e.getMessage());
-                taskExecutor.execute(this::readFromConsole);
+                System.err.println("ERROR in ConsoleReader " + e.getMessage());
             }
         }
-
     }
 }
