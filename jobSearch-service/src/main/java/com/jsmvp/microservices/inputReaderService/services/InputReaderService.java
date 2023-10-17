@@ -1,5 +1,6 @@
 package com.jsmvp.microservices.inputReaderService.services;
 
+import com.jsmvp.microservices.jobSearchService.controllers.JobSearchController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Async;
@@ -11,6 +12,8 @@ public class InputReaderService {
     private final int maxRetryAttempts = 3;
 
     private final TaskExecutor taskExecutor;
+    @Autowired
+    JobSearchController jobSearchController;
 
     @Autowired
     public InputReaderService(TaskExecutor taskExecutor) {
@@ -23,6 +26,8 @@ public class InputReaderService {
             try {
                 System.out.println("Input Received in InputReaderService: " + input);
 //                TODO process ConsoleReader website textbox inputs can be done directly from the controller not sure if its a good idea thoughTFD
+
+                jobSearchController.getJobSearchResultsViaKeywords6_6(input);
                 System.out.println("InputReaderService Finished");
 
                 break;
