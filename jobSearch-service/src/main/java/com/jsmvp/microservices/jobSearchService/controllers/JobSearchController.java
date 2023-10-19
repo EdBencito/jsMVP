@@ -1,9 +1,9 @@
 package com.jsmvp.microservices.jobSearchService.controllers;
 
-import com.jsmvp.microservices.jobSearchService.dtos.Greeting;
-import com.jsmvp.microservices.jobSearchService.dtos.HelloMessage;
 import com.jsmvp.microservices.jobSearchService.dtos.Job;
 import com.jsmvp.microservices.jobSearchService.dtos.JobSearchResults;
+import com.jsmvp.microservices.jobSearchService.dtos.Message;
+import com.jsmvp.microservices.jobSearchService.dtos.Response;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -135,7 +135,7 @@ public class JobSearchController {
 
     @MessageMapping("/JobSearch") // the prefix is already set to /app full destination is really /app/hello
     @SendTo("/topic/jobSearchResults")
-    public Greeting getJobSearchResultsViaKeywords7(HelloMessage message) {
-        return new Greeting("Hello, " + message.getName());
+    public Response getJobSearchResultsViaKeywords7(Message message) {
+        return new Response("Hello, " + message.getMessage());
     }
 }

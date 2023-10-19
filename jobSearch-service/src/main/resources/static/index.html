@@ -6,10 +6,10 @@
     <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
 </head>
 <body>
-<h1>WebSocket Client</h1>
+<h1>Job Search Client</h1>
 
-<input type="text" id="name" placeholder="Your Name">
-<button onclick="sendName()">Send</button>
+<input type="text" id="message" placeholder="Keywords">
+<button onclick="sendMessage()">Send</button>
 
 <div id="messages"></div>
 
@@ -18,16 +18,16 @@
     const stompClient = Stomp.over(socket);
 
     stompClient.connect({}, (frame) => {
-        stompClient.subscribe('/topic/jobSearchResults', (greeting) => {
+        stompClient.subscribe('/topic/jobSearchResults', (response) => {
             // Handle incoming messages
-            const content = JSON.parse(greeting.body).content;
-            displayMessage(content);
+            const responseContent = JSON.parse(response.body).responseContent;
+            displayMessage(responseContent);
         });
     });
 
-    function sendName() {
-        const name = document.getElementById('name').value;
-        stompClient.send('/app/JobSearch', {}, JSON.stringify({ 'name': name }));
+    function sendMessage() {
+        const message = document.getElementById('message').value;
+        stompClient.send('/app/JobSearch', {}, JSON.stringify({ 'message': message }));
     }
 
     function displayMessage(message) {
