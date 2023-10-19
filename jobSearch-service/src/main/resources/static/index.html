@@ -18,7 +18,7 @@
     const stompClient = Stomp.over(socket);
 
     stompClient.connect({}, (frame) => {
-        stompClient.subscribe('/topic/greetings', (greeting) => {
+        stompClient.subscribe('/topic/jobSearchResults', (greeting) => {
             // Handle incoming messages
             const content = JSON.parse(greeting.body).content;
             displayMessage(content);
@@ -27,7 +27,7 @@
 
     function sendName() {
         const name = document.getElementById('name').value;
-        stompClient.send('/app/hello', {}, JSON.stringify({ 'name': name }));
+        stompClient.send('/app/JobSearch', {}, JSON.stringify({ 'name': name }));
     }
 
     function displayMessage(message) {

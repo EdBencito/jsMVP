@@ -133,8 +133,8 @@ public class JobSearchController {
         }
     }
 
-    @MessageMapping("/hello") // the prefix is already set to /app full destination is really /app/hello
-    @SendTo("/topic/greetings")
+    @MessageMapping("/JobSearch") // the prefix is already set to /app full destination is really /app/hello
+    @SendTo("/topic/jobSearchResults")
     public Greeting getJobSearchResultsViaKeywords7(HelloMessage message) {
         return new Greeting("Hello, " + message.getName());
     }
