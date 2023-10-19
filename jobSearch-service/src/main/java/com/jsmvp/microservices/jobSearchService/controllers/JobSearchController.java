@@ -138,5 +138,4 @@ public class JobSearchController {
     public Greeting getJobSearchResultsViaKeywords7(HelloMessage message) {
         return new Greeting("Hello, " + message.getName());
     }
-
 }
