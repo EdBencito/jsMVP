@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Client</title>
+    <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h1>WebSocket Client</h1>
+
+<input type="text" id="name" placeholder="Your Name">
+<button onclick="sendName()">Send</button>
+
+<div id="messages"></div>
+
+<script>
+    const socket = new SockJS('/ws'); // Connect to the WebSocket endpoint
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, (frame) => {
+        stompClient.subscribe('/topic/greetings', (greeting) => {
+            // Handle incoming messages
+            const content = JSON.parse(greeting.body).content;
+            displayMessage(content);
+        });
+    });
+
+    function sendName() {
+        const name = document.getElementById('name').value;
+        stompClient.send('/app/hello', {}, JSON.stringify({ 'name': name }));
+    }
+
+    function displayMessage(message) {
+        const messagesDiv = document.getElementById('messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.textContent = message;
+        messagesDiv.appendChild(messageDiv);
+    }
+</script>
+</body>
+</html>
