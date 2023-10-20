@@ -4,6 +4,8 @@
     <title>WebSocket Client</title>
     <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+    <script src="/js/main.js"></script>
+
 </head>
 <body>
 <h1>Job Search Client</h1>
@@ -12,30 +14,5 @@
 <button onclick="sendMessage()">Send</button>
 
 <div id="messages"></div>
-
-<script>
-    const socket = new SockJS('/ws'); // Connect to the WebSocket endpoint
-    const stompClient = Stomp.over(socket);
-
-    stompClient.connect({}, (frame) => {
-        stompClient.subscribe('/topic/jobSearchResults', (response) => {
-            // Handle incoming messages
-            const responseContent = JSON.parse(response.body).responseContent;
-            displayMessage(responseContent);
-        });
-    });
-
-    function sendMessage() {
-        const message = document.getElementById('message').value;
-        stompClient.send('/app/JobSearch', {}, JSON.stringify({ 'message': message }));
-    }
-
-    function displayMessage(message) {
-        const messagesDiv = document.getElementById('messages');
-        const messageDiv = document.createElement('div');
-        messageDiv.textContent = message;
-        messagesDiv.appendChild(messageDiv);
-    }
-</script>
 </body>
 </html>

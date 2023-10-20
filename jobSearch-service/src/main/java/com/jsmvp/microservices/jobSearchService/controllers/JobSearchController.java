@@ -25,8 +25,26 @@ public class JobSearchController {
     String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";
 
     StringBuilder kurl = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=software engineer");
-    StringBuilder turl = new StringBuilder("https://www.reed.co.uk/api/1.0/search");
     StringBuilder url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=");
+
+    private static void printJobs(List<Job> jobs, String x) {
+        for (Job job : jobs) {
+            System.out.println("Job ID: " + job.getJobId());
+            System.out.println("Employer Name: " + job.getEmployerName());
+            System.out.println("Job Title: " + job.getJobTitle());
+            System.out.println("Location: " + job.getLocationName());
+            System.out.println("Minimum Salary: " + job.getMinimumSalary() + " " + job.getCurrency());
+            System.out.println("Maximum Salary: " + job.getMaximumSalary() + " " + job.getCurrency());
+            System.out.println("Expiration Date: " + job.getExpirationDate());
+            System.out.println("Date: " + job.getDate());
+            System.out.println("Job Description: " + job.getJobDescription());
+            System.out.println("Applications: " + job.getApplications());
+            System.out.println("Job URL: " + job.getJobUrl());
+            System.out.println(); // Add a newline for separation
+            System.out.println(x); // TODO: REMEMBER TO TAKE OFF
+
+        }
+    }
 
     @GetMapping("/t0")
     public void t0() {
@@ -47,22 +65,7 @@ public class JobSearchController {
 
         List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
 
-        for (Job job : jobs) {
-            System.out.println("Job ID: " + job.getJobId());
-            System.out.println("Employer Name: " + job.getEmployerName());
-            System.out.println("Job Title: " + job.getJobTitle());
-            System.out.println("Location: " + job.getLocationName());
-            System.out.println("Minimum Salary: " + job.getMinimumSalary() + " " + job.getCurrency());
-            System.out.println("Maximum Salary: " + job.getMaximumSalary() + " " + job.getCurrency());
-            System.out.println("Expiration Date: " + job.getExpirationDate());
-            System.out.println("Date: " + job.getDate());
-            System.out.println("Job Description: " + job.getJobDescription());
-            System.out.println("Applications: " + job.getApplications());
-            System.out.println("Job URL: " + job.getJobUrl());
-            System.out.println(); // Add a newline for separation
-            System.out.println("***T4 SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
-
-        }
+        printJobs(jobs, "***T4 SUCCESS***");
     }
 
     @GetMapping("/t5")
@@ -115,22 +118,7 @@ public class JobSearchController {
 
         List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
 
-        for (Job job : jobs) {
-            System.out.println("Job ID: " + job.getJobId());
-            System.out.println("Employer Name: " + job.getEmployerName());
-            System.out.println("Job Title: " + job.getJobTitle());
-            System.out.println("Location: " + job.getLocationName());
-            System.out.println("Minimum Salary: " + job.getMinimumSalary() + " " + job.getCurrency());
-            System.out.println("Maximum Salary: " + job.getMaximumSalary() + " " + job.getCurrency());
-            System.out.println("Expiration Date: " + job.getExpirationDate());
-            System.out.println("Date: " + job.getDate());
-            System.out.println("Job Description: " + job.getJobDescription());
-            System.out.println("Applications: " + job.getApplications());
-            System.out.println("Job URL: " + job.getJobUrl());
-            System.out.println(); // Add a newline for separation
-            System.out.println("***T6.6 SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
-
-        }
+        printJobs(jobs, "***T6.6 SUCCESS***");
     }
 
     @MessageMapping("/JobSearch") // the prefix is already set to /app full destination is really /app/hello
