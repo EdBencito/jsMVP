@@ -3,13 +3,12 @@ package com.jsmvp.microservices.jobSearchService.controllers;
 import com.jsmvp.microservices.jobSearchService.dtos.Job;
 import com.jsmvp.microservices.jobSearchService.dtos.JobSearchResults;
 import com.jsmvp.microservices.jobSearchService.dtos.Message;
-import com.jsmvp.microservices.jobSearchService.dtos.Response;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +19,11 @@ import java.util.List;
 @Controller
 @RestController
 public class JobSearchController {
+    private SimpMessagingTemplate messagingTemplate;
+
+    public JobSearchController(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
 
 
     String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";
@@ -121,9 +125,30 @@ public class JobSearchController {
         printJobs(jobs, "***T6.6 SUCCESS***");
     }
 
+//    @MessageMapping("/JobSearch") // the prefix is already set to /app full destination is really /app/hello
+//    @SendTo("/topic/jobSearchResults")
+//    public Response getJobSearchResultsViaKeywords7(Message message) {
+//        return new Response("Hello, " + message.getMessage());
+//    }
+
     @MessageMapping("/JobSearch") // the prefix is already set to /app full destination is really /app/hello
-    @SendTo("/topic/jobSearchResults")
-    public Response getJobSearchResultsViaKeywords7(Message message) {
-        return new Response("Hello, " + message.getMessage());
+//    @SendTo("/topic/jobSearchResults")
+    public void getJobSearchResultsViaKeywords7(Message message) {
+        url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=");
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(AUTH, "");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+
+        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url.append(message.getMessage()).toString(), HttpMethod.GET, entity, JobSearchResults.class);
+        JobSearchResults jobSearchResults = result.getBody();
+
+        List<Job> jobs = jobSearchResults.getResults();
+
+        messagingTemplate.convertAndSend("/topic/jobSearchResults", jobs);
+
     }
 }
