@@ -27,7 +27,6 @@ public class JobSearchServiceApplication implements ApplicationContextAware {
         consoleReader.readFromConsole();
     }
 
-
     @Override
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         JobSearchServiceApplication.applicationContext = applicationContext;

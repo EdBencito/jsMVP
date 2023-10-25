@@ -14,18 +14,6 @@
         stompClient.send('/app/JobSearch', {}, JSON.stringify({ 'message': message }));
     }
 
-    function sendConsoleMessage(input) {
-        var message = input;
-        stompClient.send('/app/JobSearch', {}, JSON.stringify({ 'message': message }));
-    }
-
-//    function displayMessage(message) {
-//        const messagesDiv = document.getElementById('messages');
-//        const messageDiv = document.createElement('div');
-//        messageDiv.textContent = message;
-//        messagesDiv.appendChild(messageDiv);
-//    }
-
 function displayMessage(message) {
     const resultsDiv = document.getElementById('messages');
 
@@ -58,7 +46,4 @@ function displayMessage(message) {
     }
 }
 
-        function displayMessage1() {
-    console.log("***testing 123***")
-    }
 

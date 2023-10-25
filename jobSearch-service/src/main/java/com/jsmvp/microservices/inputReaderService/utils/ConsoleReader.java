@@ -21,11 +21,7 @@ public class ConsoleReader {
                 Scanner scanner = new Scanner(System.in);
                 System.out.println("Search: ");
                 String input = scanner.nextLine();
-                System.out.println("Input Received in ConsoleReader: " + input);
-                System.out.println("***Sent to InputReaderService***");
-//                TODO PROCESS THE INPUT
                 inputReaderService.processInput(input);
-
             } catch (Exception e) {
                 System.err.println("ERROR in ConsoleReader " + e.getMessage());
             }
