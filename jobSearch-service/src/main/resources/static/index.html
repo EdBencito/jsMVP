@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Spring WebSocket JobSearch Client </title>
+    <title>Spring WebSocket JobSearch Client</title>
     <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
     <script src="/js/main.js"></script>
-
+    <link rel="stylesheet" type="text/css" href="indexStyles.css">
 </head>
 <body>
-<h1 style="font-family: Arial">Job Search: Indeed API </h1>
-
-<input type="text" id="message" placeholder="Search 'Software Engineer'">
-<button onclick="sendMessage()">Send</button>
-
+<h1>Not A Job Search <span>Powered by Reed</span></h1>
+<div class="search-container">
+    <input type="text" id="message" placeholder="Search 'Software Engineer'">
+    <button onclick="sendMessage()">Search</button>
+</div>
 <div id="messages"></div>
 </body>
 </html>

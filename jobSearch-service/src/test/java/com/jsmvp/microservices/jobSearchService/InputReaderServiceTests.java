@@ -21,9 +21,8 @@ public class InputReaderServiceTests {
 
     @Autowired
     private InputReaderService inputReaderService;
-
     @MockBean
-    private JobSearchController jobSearchController; // Use the injected bean
+    private JobSearchController jobSearchController;
 
     @Test
     void shouldPassWhenInputIsValid() {
