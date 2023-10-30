@@ -30,7 +30,7 @@ public class InputReaderServiceTests {
         inputReaderService.processInput("testInput");
 
         // Verify the interaction with the injected mock object
-        verify(jobSearchController, times(1)).getJobSearchResultsViaKeywords2("testInput");
+        verify(jobSearchController, times(1)).getJobSearchResultsViaKeywordsConsole("testInput");
     }
 }
 

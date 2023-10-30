@@ -10,18 +10,44 @@ body {
 
 h1 {
     font-family: Arial, sans-serif;
-    margin-bottom: 5px; /* Add a margin to control the gap */
+    margin-bottom: 10px;
+    font-size: 40px;
 }
 
 span {
-    font-size: 7px; /* Adjust the font size as needed */
+    font-size: 7px;
 }
 
 .search-container {
+    width: 500px;
+    height: 25px;
+    background-color: white;
+    border-radius: 50px;
     display: flex;
     align-items: center;
+    padding: 10px;
 }
 
+#searchButton {
+    background: none;
+    border: none;
+    border-radius: 0%;
+    padding: 0;
+    cursor: pointer;
+}
+
+#searchButton i {
+    font-size: 16px;
+    /* Adjust the size as needed */
+    color: #777;
+}
+
+
 #message {
-    margin-right: 5px; /* Adjust the spacing between the input and the button */
+    flex: 1;
+    height: 30px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    /* margin-right: 2px; */
 }

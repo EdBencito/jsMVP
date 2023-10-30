@@ -26,7 +26,7 @@ public class InputReaderService {
     public void processInput(String input) {
         while (currentAttempt < maxRetryAttempts) {
             try {
-                jobSearchController.getJobSearchResultsViaKeywords2(input);
+                jobSearchController.getJobSearchResultsViaKeywordsConsole(input);
                 break;
             } catch (RuntimeException e) {
                 System.err.println("ERROR in InputReaderService: " + e.getMessage());

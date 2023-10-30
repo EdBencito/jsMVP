@@ -25,7 +25,7 @@ public class JobSearchController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";
+    final String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";
 
     StringBuilder test_url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=software engineer");
     StringBuilder url;
@@ -69,7 +69,7 @@ public class JobSearchController {
     }
 
     @GetMapping("/T0") // deserializes the list of jobs from the array of results and prints in console
-    public void getJobSearchResultsViaKeywords0() {
+    public void getJobSearchResultsViaTestURL() {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
@@ -83,12 +83,12 @@ public class JobSearchController {
         List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
 
         printJobs(jobs);
-        System.out.println("***T0 SUCCESS***");
+        System.out.println("***T0 COMPLETE***");
     }
 
     @GetMapping("/T1")
     // returns jobs json objects like the REED API ******************* NOT REALTIME DISPLAY ON WEBSITE
-    public List<Job> getJobSearchResultsViaKeywords1() {
+    public List<Job> getJobSearchResultsViaTestURL2() {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setBasicAuth(AUTH, "");
@@ -99,13 +99,13 @@ public class JobSearchController {
 
         List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
 
-        System.out.println("***T1 SUCCESS***"); // TODO: REMEMBER TO TAKE OFF
+        System.out.println("***T1 COMPLETE***"); // TODO: REMEMBER TO TAKE OFF
         return jobs;
 
     }
 
     @GetMapping("/T2") // deserializes the list of jobs from the array of results
-    public void getJobSearchResultsViaKeywords2(String input) {
+    public void getJobSearchResultsViaKeywordsConsole(String input) {
         url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=");
 
         RestTemplate restTemplate = new RestTemplate();
@@ -121,6 +121,6 @@ public class JobSearchController {
         List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
 
         printJobs(jobs);
-        System.out.println("***T2 SUCCESS***");
+        System.out.println("***T2 COMPLETE***");
     }
 }
