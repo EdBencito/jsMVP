@@ -1,13 +1,3 @@
-// if (!window.stompClient) {
-//     const socket = new SockJS('/ws'); 
-//     window.stompClient = Stomp.over(socket);
-
-//     stompClient.connect({}, (frame) => {
-//         console.log("Connection Sucessful")
-//     });
-// }
-
-
 const socket = new SockJS('/ws'); // Connect to the WebSocket endpoint
 const stompClient = Stomp.over(socket);
 
@@ -21,11 +11,25 @@ stompClient.connect({}, (frame) => {
 
 function sendMessage() {
     const message = document.getElementById('message').value;
-    stompClient.send('/app/JobSearch', {}, JSON.stringify({ 'message': message }));
+    const location = document.getElementById('location').value;
+    const distanceSelect = document.getElementById('dropdown');
+    const distance = distanceSelect.options[distanceSelect.selectedIndex].value;
+
+
+    const data = {
+        'message': message,
+        'location': location,
+        'distance': distance
+    };
+    console.log(message)
+    console.log(location)
+    console.log(distance)
+
+    stompClient.send('/app/JobSearchViaKeywordsAndLocation', {}, JSON.stringify(data));
 }
 
 function displayMessage(message) {
-    const resultsDiv = document.getElementById('messages');
+    const resultsDiv = document.getElementById('jobListings');
 
     // Clear any previous results
     resultsDiv.innerHTML = '';
@@ -39,15 +43,20 @@ function displayMessage(message) {
 
             jobDiv.innerHTML = `
                 <h3>${job.jobTitle}</h3>
-                <p><strong>Employer:</strong> ${job.employerName}</p>
-                <p><strong>Location:</strong> ${job.locationName}</p>
-                <p><strong>Salary:</strong> ${job.currency} ${job.minimumSalary} - ${job.maximumSalary}</p>
+                <div class="date-employer-container">
+                    <p><strong>Posted on:</strong> ${job.date}</p>
+                    <p><strong>Company:</strong> ${job.employerName}</p>
+                </div>
+                <p><strong>Applicants:</strong> ${job.applications}</p>
+                <div class="location-salary-container">
+                    <p><strong>Location:</strong> ${job.locationName}</p>
+                    <p><strong>Salary:</strong> ${job.currency} ${job.minimumSalary} - ${job.maximumSalary}</p>
+                </div>
                 <p><strong>Job Description:</strong> ${job.jobDescription}</p>
-                <p><strong>Applications:</strong> ${job.applications}</p>
                 <a href="${job.jobUrl}" target="_blank">Read More</a>
-                <hr>
             `;
 
+            jobDiv.style.fontFamily = "'Source Sans Pro', sans-serif";
             resultsDiv.appendChild(jobDiv);
         });
     } else {
@@ -55,5 +64,3 @@ function displayMessage(message) {
         resultsDiv.innerHTML = 'No job listings found.';
     }
 }
-
-

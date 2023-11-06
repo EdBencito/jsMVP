@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Spring WebSocket JobSearch Client</title>
+    <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/2.3.3/stomp.min.js"></script>
+    <script src="/js/resultsScripts.js"></script>
+    <link rel="stylesheet" type="text/css" href="resultsStyles.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+<header>
+    <div class="header">
+        <div class="logo">
+            <img src="images\drd.png" alt="Not A JobSearch">
+            <h3> Not a JobSearch</h3>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Career Advice*</a></li>
+                <li><a href="#">Companies*</a></li>
+                <li><a href="#">Salary Guide*</a></li>
+
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="search-container">
+    <input type="text" id="message" placeholder="Job title, keywords or company">
+    <!-- <input type="text" id="location" placeholder="town or postcode"> -->
+
+    <div class="location-and-distance-container">
+        <input type="text" id="location" placeholder="town or postcode">
+        <label for="dropdown">Distance:</label>
+        <select id="dropdown" name="distance">
+            <option value="5" selected>5 Miles</option>
+            <option value="10">10 Miles</option>
+            <option value="15">15 Miles</option>
+            <option value="20">20 Miles</option>
+            <option value="25">25 Miles</option>
+            <option value="30">30 Miles</option>
+        </select>
+    </div>
+
+    <button id="searchButton" onclick="sendMessage()"><i class="fa fa-search" aria-hidden="true"></i></button>
+</div>
+
+<div class="job-listings-container" id="jobListings"></div> <!-- this is where the results goes -->
+
+
+<footer class="not-a-jobsearch-footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <a href="#">Web Socket</a>
+        </div>
+        <div class="footer-section">
+            <a href="#">REST</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2023 Not A JobSearch. All rights reserved MAYBE...
+    </div>
+    <div class="footer-disclaimer">
+        <br> Content Disclaimer:
+        Menu items marked with * are place holders.
+    </div>
+</footer>
+
+
+</body>
+
+</html>

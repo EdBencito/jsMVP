@@ -1,6 +1,7 @@
 package com.jsmvp.microservices.jobSearchService.controllers;
 
 import com.jsmvp.microservices.jobSearchService.dtos.Job;
+import com.jsmvp.microservices.jobSearchService.dtos.JobSearchRequest;
 import com.jsmvp.microservices.jobSearchService.dtos.JobSearchResults;
 import com.jsmvp.microservices.jobSearchService.dtos.Message;
 import org.springframework.http.HttpEntity;
@@ -24,9 +25,7 @@ public class JobSearchController {
     public JobSearchController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
-
     final String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";
-
     StringBuilder test_url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=software engineer");
     StringBuilder url;
 
@@ -41,8 +40,36 @@ public class JobSearchController {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
 
-        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url.append(message.getMessage()).toString(),
-                HttpMethod.GET, entity, JobSearchResults.class);
+        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url
+                .append(message.getMessage()).toString(), HttpMethod.GET, entity, JobSearchResults.class);
+        JobSearchResults jobSearchResults = result.getBody();
+
+        List<Job> jobs = jobSearchResults.getResults();
+
+        messagingTemplate.convertAndSend("/topic/jobSearchResults", jobs);
+        System.out.println("***Search was a success***"); // TODO: REMEMBER TO TAKE OFF
+
+    }
+
+    @MessageMapping("/JobSearchViaKeywordsAndLocation")
+    public void getJobSearchResultsViaKeywordsAndLocation(JobSearchRequest jobSearchRequest) {
+        url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?");
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(AUTH, "");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+
+        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url
+                .append("keywords=")
+                .append(jobSearchRequest.getMessage())
+                .append("&locationName=")
+                .append(jobSearchRequest.getLocation())
+                .append("&distanceFromLocation=")
+                .append(jobSearchRequest.getDistance()).toString(), HttpMethod.GET, entity, JobSearchResults.class);
+
         JobSearchResults jobSearchResults = result.getBody();
 
         List<Job> jobs = jobSearchResults.getResults();

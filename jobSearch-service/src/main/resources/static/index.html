@@ -9,14 +9,16 @@
     <link rel="stylesheet" type="text/css" href="indexStyles.css">
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 
 </head>
 
 <body>
+<img src="images\drd.png" alt="Not A JobSearch">
 <h1>Not A Job Search <span>Powered by Reed</span></h1>
 <div class="search-container">
     <input type="text" id="message" placeholder="Search 'Software Engineer'">
-    <button onclick="sendMessage()"><i class="fa fa-search" aria-hidden="true"></i></button>
+    <button id="searchButton" onclick="sendMessage()"><i class="fa fa-search" aria-hidden="true"></i></button>
 </div>
 <div id="messages"></div>
 </body>
