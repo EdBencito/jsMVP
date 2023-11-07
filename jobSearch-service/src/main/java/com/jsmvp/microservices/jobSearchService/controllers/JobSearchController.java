@@ -8,10 +8,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,6 +28,7 @@ public class JobSearchController {
     public JobSearchController(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
+
     final String AUTH = "4110977c-a97c-4268-a3f0-217766c2f238";
     StringBuilder test_url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=software engineer");
     StringBuilder url;
@@ -40,8 +44,7 @@ public class JobSearchController {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
 
-        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url
-                .append(message.getMessage()).toString(), HttpMethod.GET, entity, JobSearchResults.class);
+        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url.append(message.getMessage()).toString(), HttpMethod.GET, entity, JobSearchResults.class);
         JobSearchResults jobSearchResults = result.getBody();
 
         List<Job> jobs = jobSearchResults.getResults();
@@ -62,13 +65,7 @@ public class JobSearchController {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
 
-        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url
-                .append("keywords=")
-                .append(jobSearchRequest.getMessage())
-                .append("&locationName=")
-                .append(jobSearchRequest.getLocation())
-                .append("&distanceFromLocation=")
-                .append(jobSearchRequest.getDistance()).toString(), HttpMethod.GET, entity, JobSearchResults.class);
+        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url.append("keywords=").append(jobSearchRequest.getMessage()).append("&locationName=").append(jobSearchRequest.getLocation()).append("&distanceFromLocation=").append(jobSearchRequest.getDistance()).toString(), HttpMethod.GET, entity, JobSearchResults.class);
 
         JobSearchResults jobSearchResults = result.getBody();
 
@@ -77,6 +74,47 @@ public class JobSearchController {
         messagingTemplate.convertAndSend("/topic/jobSearchResults", jobs);
         System.out.println("***Search was a success***"); // TODO: REMEMBER TO TAKE OFF
 
+    }
+
+    @GetMapping("/searchJobsByKeywordsLocationDistance")
+    public List<Job> searchJobsByKeywordsLocationDistance(@NonNull String keywords, @Nullable String location, @RequestParam(defaultValue = "5") int distance) {
+        url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?");
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(AUTH, "");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+
+        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url.append("keywords=").append(keywords).append("&locationName=").append(location).append("&distanceFromLocation=").append(distance).toString(), HttpMethod.GET, entity, JobSearchResults.class);
+
+        JobSearchResults jobSearchResults = result.getBody();
+
+        List<Job> jobs = jobSearchResults.getResults();
+
+        return jobs;
+
+    }
+
+
+    // deserializes the list of jobs from the array of results
+    public void getJobSearchResultsViaKeywordsConsole(String input) {
+        url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=");
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(AUTH, "");
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url.append(input).toString(), HttpMethod.GET, entity, JobSearchResults.class);
+        JobSearchResults jobSearchResults = result.getBody();
+
+        List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
+
+        printJobs(jobs);
+        System.out.println("***SEARCH COMPLETE***");
     }
 
     private static void printJobs(List<Job> jobs) {
@@ -93,61 +131,5 @@ public class JobSearchController {
             System.out.println("Applications: " + job.getApplications());
             System.out.println("Job URL: " + job.getJobUrl() + "\n");
         }
-    }
-
-    @GetMapping("/T0") // deserializes the list of jobs from the array of results and prints in console
-    public void getJobSearchResultsViaTestURL() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(AUTH, "");
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-
-        ResponseEntity<JobSearchResults> result = restTemplate.exchange(test_url.toString(), HttpMethod.GET, entity, JobSearchResults.class);
-        JobSearchResults jobSearchResults = result.getBody();
-
-        List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
-
-        printJobs(jobs);
-        System.out.println("***T0 COMPLETE***");
-    }
-
-    @GetMapping("/T1")
-    // returns jobs json objects like the REED API ******************* NOT REALTIME DISPLAY ON WEBSITE
-    public List<Job> getJobSearchResultsViaTestURL2() {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(AUTH, "");
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        ResponseEntity<JobSearchResults> result = restTemplate.exchange(test_url.toString(), HttpMethod.GET, entity, JobSearchResults.class);
-        JobSearchResults jobSearchResults = result.getBody();
-
-        List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
-
-        System.out.println("***T1 COMPLETE***"); // TODO: REMEMBER TO TAKE OFF
-        return jobs;
-
-    }
-
-    @GetMapping("/T2") // deserializes the list of jobs from the array of results
-    public void getJobSearchResultsViaKeywordsConsole(String input) {
-        url = new StringBuilder("https://www.reed.co.uk/api/1.0/search?keywords=");
-
-        RestTemplate restTemplate = new RestTemplate();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBasicAuth(AUTH, "");
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-
-        ResponseEntity<JobSearchResults> result = restTemplate.exchange(url.append(input).toString(), HttpMethod.GET, entity, JobSearchResults.class);
-        JobSearchResults jobSearchResults = result.getBody();
-
-        List<Job> jobs = jobSearchResults.getResults(); // TODO: ADDRESS POTENTIAL NULLPOINTEREXCEPTION
-
-        printJobs(jobs);
-        System.out.println("***T2 COMPLETE***");
     }
 }
