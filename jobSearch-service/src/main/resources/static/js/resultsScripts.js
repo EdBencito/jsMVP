@@ -1,13 +1,13 @@
-const socket = new SockJS('/ws'); // Connect to the WebSocket endpoint
-const stompClient = Stomp.over(socket);
+// const socket = new SockJS('/ws'); // Connect to the WebSocket endpoint
+// const stompClient = Stomp.over(socket);
 
-stompClient.connect({}, (frame) => {
-    stompClient.subscribe('/topic/jobSearchResults', (response) => {
-        // Handle incoming messages
-        const responseContent = JSON.parse(response.body);
-        displayMessage(responseContent);
-    });
-});
+// stompClient.connect({}, (frame) => {
+//     stompClient.subscribe('/topic/jobSearchResults', (response) => {
+//         // Handle incoming messages
+//         const responseContent = JSON.parse(response.body);
+//         displayMessage(responseContent);
+//     });
+// });
 
 function sendMessage() {
     const message = document.getElementById('message').value;
